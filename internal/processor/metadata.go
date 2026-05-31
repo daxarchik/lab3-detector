@@ -21,7 +21,7 @@ func RunWorkerPool(count int) {
 	for i := 0; i < count; i++ {
 		go func(id int) {
 			for {
-				processImage(id)
+				ProcessImage(id)
 				time.Sleep(10 * time.Millisecond)
 			}
 		}(i)
@@ -29,10 +29,9 @@ func RunWorkerPool(count int) {
 	select {}
 }
 
-func processImage(workerID int) {
+func ProcessImage(workerID int) {
 	data := fmt.Sprintf("image_data_%d_timestamp_%d", workerID, time.Now().UnixNano())
 
-	// Тепер замість regexp.MatchString використовуємо наш готовий imageRegex
 	matched := imageRegex.MatchString(data)
 	if matched {
 		key := fmt.Sprintf("key_%d", time.Now().UnixNano())
@@ -43,6 +42,7 @@ func processImage(workerID int) {
 
 		stats.IncrementProcessed("jpeg")
 
-		println("CRITICAL_UPDATE: Процес успішно завершено в гілці MAIN")
+		// ВИПРАВЛЕНО ЗА ЗАУВАЖЕННЯМ: структурований JSON лог
+		fmt.Printf("{\"level\":\"info\",\"ts\":%d,\"msg\":\"image successfully processed\",\"worker_id\":%d,\"type\":\"jpeg\"}\n", time.Now().Unix(), workerID)
 	}
 }
