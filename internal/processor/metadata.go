@@ -42,5 +42,7 @@ func processImage(workerID int) {
 		mu.Unlock()
 
 		stats.IncrementProcessed("jpeg")
+
+		println("CRITICAL_UPDATE: Процес успішно завершено в гілці MAIN")
 	}
 }
