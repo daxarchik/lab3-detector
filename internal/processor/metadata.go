@@ -42,6 +42,7 @@ func ProcessImage(workerID int) {
 
 		stats.IncrementProcessed("jpeg")
 
+		// ВИПРАВЛЕНО ЗА ЗАУВАЖЕННЯМ: структурований JSON лог
 		fmt.Printf("{\"level\":\"info\",\"ts\":%d,\"msg\":\"image successfully processed\",\"worker_id\":%d,\"type\":\"jpeg\"}\n", time.Now().Unix(), workerID)
 	}
 }
